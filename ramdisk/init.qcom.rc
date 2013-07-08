@@ -60,7 +60,7 @@ on boot
     mkdir /dev/socket/qmux_bluetooth 0770 bluetooth bluetooth
     chmod 2770 /dev/socket/qmux_bluetooth
 
-    setprop wifi.interface eth0
+    setprop wifi.interface wlan0
 
     #Set SUID bit for usbhub
     chmod 4755 /system/bin/usbhub
@@ -286,23 +286,31 @@ on property:ro.use_data_netmgrd=false
 on property:ro.data.large_tcp_window_size=true
     write /proc/sys/net/ipv4/tcp_adv_win_scale  1
 
-service wpa_supplicant /system/bin/logwrapper /system/bin/wpa_supplicant -Dwext -ieth0 -c/data/misc/wifi/wpa_supplicant.conf
-    class late_start
-    user root
-    group wifi inet
-    socket wpa_eth0 dgram 660 wifi wifi
+service p2p_supplicant /system/bin/logwrapper /system/bin/wpa_supplicant \
+    -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf -dddd \
+    -e/data/misc/wifi/entropy.bin
+    #   we will start as root and wpa_supplicant will switch to user wifi
+    #   after setting up the capabilities required for WEXT
+    #   user wifi
+    #   group wifi inet keystore
+    class main
+    socket wpa_wlan0 dgram 660 wifi wifi
     disabled
     oneshot
 
-service p2p_supplicant /system/bin/logwrapper /system/bin/wpa_supplicant -Dwext -ieth0 -c/data/misc/wifi/wpa_supplicant.conf
-    class late_start
-    user root
-    group wifi inet
-    socket wpa_eth0 dgram 660 wifi wifi
+service wpa_supplicant /system/bin/logwrapper /system/bin/wpa_supplicant \
+    -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf -dddd \
+    -e/data/misc/wifi/entropy.bin
+    #   we will start as root and wpa_supplicant will switch to user wifi
+    #   after setting up the capabilities required for WEXT
+    #   user wifi
+    #   group wifi inet keystore
+    class main
+    socket wpa_wlan0 dgram 660 wifi wifi
     disabled
     oneshot
 
-service dhcpcd_eth0 /system/bin/dhcpcd -ABKLG
+service dhcpcd_wlan0 /system/bin/dhcpcd -ABKLG
     class late_start
     disabled
     oneshot
@@ -312,7 +320,7 @@ service dhcpcd_p2p /system/bin/dhcpcd -ABKLG
     disabled
     oneshot
 
-service iprenew_eth0 /system/bin/dhcpcd -n 
+service iprenew_wlan0 /system/bin/dhcpcd -n 
     class late_start
     disabled
     oneshot
