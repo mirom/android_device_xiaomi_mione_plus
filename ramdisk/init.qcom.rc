@@ -163,6 +163,11 @@ on post-fs-data
     mkdir /data/misc/dhcp 0770 dhcp dhcp
     chown dhcp dhcp /data/misc/dhcp
 
+    chmod 0770 /data/misc/wifi 
+    chmod 0660 /data/misc/wifi/wpa_supplicant.conf 
+    chown wifi wifi /data/misc/wifi 
+    chown wifi wifi /data/misc/wifi/wpa_supplicant.conf
+
     mkdir /data/system/wpa_supplicant 0771 wifi wifi 
     chmod 0771 /data/system/wpa_supplicant 
     chown wifi wifi /data/system/wpa_supplicant 
