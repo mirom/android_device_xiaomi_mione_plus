@@ -26,7 +26,7 @@ WIFI_DRIVER_FW_PATH_AP  := "/system/etc/firmware/fw_bcm4329_apsta.bin"
 # new mione device have bcm4330 chip (M1S, M1Syouth)
 WIFI_DRIVER_MODULE_NAME_DHD := bcmdhd
 WIFI_DRIVER_MODULE_PATH_DHD := "/system/lib/modules/bcmdhd.ko"
-WIFI_DRIVER_MODULE_ARG_DHD  := "firmware_path=/system/etc/firmware/fw_bcmdhd.bin nvram_path=/system/etc/firmware/4330nvram.txt"
+WIFI_DRIVER_MODULE_ARG_DHD  := "firmware_path=/system/etc/firmware/fw_bcmdhd.bin nvram_path=/system/etc/firmware/bcmdhd.cal"
 WIFI_DRIVER_FW_PATH_STA_DHD := "/system/etc/firmware/fw_bcmdhd.bin"
 WIFI_DRIVER_FW_PATH_AP_DHD  := "/system/etc/firmware/fw_bcmdhd_apsta.bin"
 

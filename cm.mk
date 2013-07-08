@@ -1,5 +1,5 @@
 # Specify phone tech before including full_phone
-$(call inherit-product, vendor/mk/config/gsm.mk)
+$(call inherit-product, vendor/cm/config/gsm.mk)
 
 # Release name
 PRODUCT_RELEASE_NAME := mione_plus
@@ -7,7 +7,7 @@ PRODUCT_RELEASE_NAME := mione_plus
 TARGET_BOOTANIMATION_NAME := vertical-480x854
 
 # Inherit some common CM stuff.
-$(call inherit-product, vendor/mk/config/common.mk)
+$(call inherit-product, vendor/cm/config/common.mk)
 
 # old audio files
 include frameworks/base/data/sounds/OldAudio.mk
@@ -35,7 +35,7 @@ $(call inherit-product, device/xiaomi/mione_plus/device_mione_plus.mk)
 
 # Setup device specific product configuration.
 PRODUCT_DEVICE := mione_plus
-PRODUCT_NAME := mk_mione_plus
+PRODUCT_NAME := cm_mione_plus
 PRODUCT_BRAND := Xiaomi
 PRODUCT_MODEL := MI-ONE Plus
 PRODUCT_MANUFACTURER := Xiaomi
