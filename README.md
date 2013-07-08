@@ -32,4 +32,4 @@ Kernel
 --------------------------------
 Kernel Version:3.08
 
-Not booting when use Linux3.4 kernel.
+Wi-Fi and Camera not available on 3.4 kernel.
