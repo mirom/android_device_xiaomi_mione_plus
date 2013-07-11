@@ -35,8 +35,8 @@ on fs
 #    mkdir /tombstones/mdm 0771 system system
 #    mkdir /tombstones/lpass 0771 system system
     mkdir /firmware 0771 system system
-    wait /dev/block/mmcblk0p1
-    mount vfat /dev/block/mmcblk0p1 /firmware ro shortname=lower
+#   wait /dev/block/mmcblk0p1
+#   mount vfat /dev/block/mmcblk0p1 /firmware ro shortname=lower
 # make modem firmware available at /vendor/firmware/image ( /vendor symlink to /system/vendor )
     mkdir /system/vendor/firmware/ 0755 system system
     symlink /firmware/image /system/vendor/firmware/image
