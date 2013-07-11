@@ -1,5 +1,7 @@
 
 on fs
     mount ext4 /dev/block/platform/msm_sdcc.1/by-name/system1 /system wait rw barrier=1 noatime nodiratime
+	wait /dev/block/mmcblk0p2
+	mount vfat /dev/block/mmcblk0p2 /firmware ro shortname=lower
     exec /system/bin/sh /system/bin/mount_ext4.sh /dev/block/platform/msm_sdcc.1/by-name/userdata /data
     exec /system/bin/sh /system/bin/mount_ext4.sh /dev/block/platform/msm_sdcc.1/by-name/cache /cache
