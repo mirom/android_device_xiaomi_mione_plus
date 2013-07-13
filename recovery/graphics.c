@@ -50,6 +50,14 @@ const unsigned cw_en=10;
 
 #define NUM_BUFFERS 2
 #define PAGE_ALIGN(n)   ((n + PAGE_SIZE - 1) & PAGE_MASK)
+
+#ifndef MSMFB_IOCTL_MAGIC
+#define MSMFB_IOCTL_MAGIC 'm'
+#endif
+#ifndef MSMFB_OVERLAY_VSYNC_CTRL
+#define MSMFB_OVERLAY_VSYNC_CTRL _IOW(MSMFB_IOCTL_MAGIC, 160, unsigned int)
+#endif
+
 typedef struct {
     GGLSurface texture;
     unsigned cwidth;
@@ -106,7 +114,12 @@ static int get_framebuffer(GGLSurface *fb)
         close(fd);
         return -1;
     }
-
+    int e = 1;
+    if (ioctl(fd, MSMFB_OVERLAY_VSYNC_CTRL, &e) == -1) {
+        perror("MSMFB_OVERLAY_VSYNC_CTRL failed");
+        close(fd);
+        return -1;
+    }
     vi.bits_per_pixel = PIXEL_SIZE * 8;
     if (PIXEL_FORMAT == GGL_PIXEL_FORMAT_BGRA_8888) {
       vi.red.offset     = 8;
@@ -141,13 +154,16 @@ static int get_framebuffer(GGLSurface *fb)
         close(fd);
         return -1;
     }
-
     if (ioctl(fd, FBIOGET_FSCREENINFO, &fi) < 0) {
         perror("failed to get fb0 info");
         close(fd);
         return -1;
     }
-
+    if (ioctl(fd, MSMFB_OVERLAY_VSYNC_CTRL, &e) == -1) {
+        perror("MSMFB_OVERLAY_VSYNC_CTRL failed");
+        close(fd);
+        return -1;
+    }
     bits = mmap(0, fi.smem_len, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
     if (bits == MAP_FAILED) {
         perror("failed to mmap framebuffer");
@@ -199,6 +215,10 @@ static void set_active_framebuffer(unsigned n)
     vi.bits_per_pixel = PIXEL_SIZE * 8;
     if (ioctl(gr_fb_fd, FBIOPUT_VSCREENINFO, &vi) < 0) {
         perror("active fb swap failed");
+    }
+    int e = 1;
+    if (ioctl(gr_fb_fd, MSMFB_OVERLAY_VSYNC_CTRL, &e) == -1) {
+        perror("MSMFB_OVERLAY_VSYNC_CTRL failed");
     }
 }
 
@@ -443,6 +463,10 @@ void gr_fb_blank(bool blank)
     int ret;
 
     ret = ioctl(gr_fb_fd, FBIOBLANK, blank ? FB_BLANK_POWERDOWN : FB_BLANK_UNBLANK);
+    int e = 1;
+    if (ioctl(gr_fb_fd, MSMFB_OVERLAY_VSYNC_CTRL, &e) == -1) {
+        perror("MSMFB_OVERLAY_VSYNC_CTRL failed");
+    }
     if (ret < 0)
         perror("ioctl(): blank");
 }
