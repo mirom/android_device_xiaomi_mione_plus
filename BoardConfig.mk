@@ -26,6 +26,8 @@
 
 # inherit from msm8660-common
 -include device/xiaomi/msm8660-common/BoardConfigCommon.mk
+# CPU
+TARGET_CPU_VARIANT := generic
 
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := mione
@@ -37,7 +39,9 @@ BOARD_KERNEL_PAGE_SIZE := 2048
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01200000
 TARGET_KERNEL_CONFIG := mione_plus_defconfig
 TARGET_PREBUILT_KERNEL := device/xiaomi/mione_plus/prebuilt/kernel
-
+# Kernel
+PRODUCT_COPY_FILES += \
+        $(TARGET_PREBUILT_KERNEL):kernel
 # Bluetooth
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR ?= device/xiaomi/mione_plus/bluetooth
 BOARD_HAVE_BLUETOOTH := true
@@ -71,7 +75,7 @@ BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
 # Recovery
 BOARD_USES_MMCUTILS := true
 BOARD_HAS_NO_SELECT_BUTTON := true
-BOARD_CUSTOM_GRAPHICS := ../../../device/xiaomi/mione_plus/recovery/graphics.c
+# BOARD_CUSTOM_GRAPHICS := ../../../device/xiaomi/mione_plus/recovery/graphics.c
 # BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_15x24.h\"
 BOARD_UMS_LUNFILE := "/sys/class/android_usb/android0/f_mass_storage/lun/file"
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/class/android_usb/android0/f_mass_storage/lun/file"
